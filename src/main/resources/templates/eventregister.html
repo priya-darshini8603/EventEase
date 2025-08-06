@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register for Event | EventEase</title>
+  <link rel="shortcut icon" href="/image/icon.png" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/css/eventregister.css}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container register-container">
+  <div class="register-card">
+    <h2 class="text-center">Register for Event</h2>
+    <p class="text-center">Fill out the form below to secure your spot at this exciting event.</p>
+
+    <!-- Event Information Display -->
+    <div class="event-info">
+      <h4>Event Details</h4>
+      <p><strong>Event Name:</strong> <span th:text="${event.name}">Event Name</span></p>
+      <p><strong>Category:</strong> <span th:text="${event.category}">Category</span></p>
+      <p><strong>Location:</strong> <span th:text="${event.location}">Location</span></p>
+      <p><strong>Date:</strong> <span th:text="${event.date}">Date</span></p>
+      <p><strong>Price:</strong> ₹<span id="eventPrice" th:text="${event.price}">Price</span></p>
+      <p><strong>Organizer:</strong> <span th:text="${event.organizer}">Organizer</span></p>
+    </div>
+
+    <form method="POST" action="/event/submit">
+     <!-- hidden input for event id -->
+     <input type="hidden" name="eventId" th:value="${event.id}">
+     
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="FullName" placeholder="Full Name" name="FullName" required>
+        <label for="FullName">Full Name</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        <input type="email" class="form-control" id="email" placeholder="Email Address" name="email" required>
+        <label for="email">Email Address</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        <input type="tel" class="form-control" id="phone" placeholder="Phone Number" name="phone" required>
+        <label for="phone">Phone Number</label>
+      </div>
+
+      <!-- Pre-select the current event's category -->
+      <div class="form-floating mb-3">
+        <select class="form-select" id="event" name="event" required>
+          <option selected disabled value="">Select an Event</option>
+          <option value="Tech" th:selected="${event.category == 'Tech'}">Tech Events</option>
+          <option value="Cultural" th:selected="${event.category == 'Cultural'}">Cultural Events</option>
+          <option value="Social" th:selected="${event.category == 'Social'}">Social Events</option>
+          <option value="Sports" th:selected="${event.category == 'Sports'}">Sport Events</option>
+          <option value="Art" th:selected="${event.category == 'Art'}">Art Exhibition</option>
+          <option value="Music" th:selected="${event.category == 'Music'}">Music Events</option>
+        </select>
+        <label for="event">Event Category</label>
+      </div>
+
+      <div class="form-floating mb-4">
+        <textarea class="form-control" placeholder="Leave a message here" id="Msg" name="Msg" style="height: 100px"></textarea>
+        <label for="Msg">Additional Message (optional)</label>
+      </div>
+      
+      <div class="d-grid mb-3">
+        <a href="javascript:void(0);" class="btn-link" onclick="payNow()">Proceed to Pay</a>
+      </div>
+
+   <!-- <div class="d-grid">
+        <button type="submit" class="btn btn-submit">Submit Registration</button>
+      </div>  -->   
+    </form>
+  </div>
+</div>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+function payNow() {
+	  console.log("Proceed to Pay clicked");
+
+	  const priceElement = document.getElementById("eventPrice");
+	  if (!priceElement) {
+	    alert("Price element not found!");
+	    return;
+	  }
+
+	  const amount = parseFloat(priceElement.textContent.trim());
+	  if (isNaN(amount)) {
+	    alert("Invalid event amount");
+	    return;
+	  }
+
+	  fetch(`/getTransaction/${amount}`)
+	    .then(response => response.json())
+	    .then(data => {
+	      const options = {
+	        "key": data.key,
+	        "amount": data.amount,
+	        "currency": data.currency,
+	        "name": "EventEase",
+	        "description": "Event Registration",
+	        "order_id": data.orderId,
+	        "handler": function (response) {
+	          alert("✅ Payment Successful! Payment ID: " + response.razorpay_payment_id);
+	          // Optionally submit form after payment
+	          document.querySelector('form').submit();
+	        },
+	        "prefill": {
+	          "name": document.getElementById("FullName").value,
+	          "email": document.getElementById("email").value,
+	          "contact": document.getElementById("phone").value
+	        },
+	        "theme": {
+	          "color": "#0d6efd"
+	        }
+	      };
+	      const rzp = new Razorpay(options);
+	      rzp.open();
+	    })
+	    .catch(error => {
+	      console.error("Error fetching transaction details:", error);
+	      alert("❌ Failed to initiate payment. Please try again.");
+	    });
+	}
+
+</script>
+
+</body>
+</html>

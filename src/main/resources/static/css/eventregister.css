@@ -1,0 +1,155 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #121212;
+    color: #fff;
+}
+
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.register-card {
+    background: #1f1f1f;
+    padding: 3rem 2rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8);
+    width: 100%;
+    max-width: 600px;
+    animation: slideUp 1s ease;
+}
+
+.register-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.9);
+}
+
+.register-card h2 {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.register-card p {
+    font-size: 1rem;
+    color: #bbb;
+    margin-bottom: 2rem;
+}
+
+.event-info {
+    background: #2a2a2a;
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    border-left: 4px solid #1e90ff;
+}
+
+.event-info h4 {
+    color: #1e90ff;
+    margin-bottom: 1rem;
+}
+
+.event-info p {
+    margin-bottom: 0.5rem;
+    color: #ddd;
+}
+
+.form-floating>.form-control,
+.form-floating>.form-select {
+    background-color: #2a2a2a;
+    border: none;
+    color: #fff;
+}
+
+.form-floating>.form-control:focus,
+.form-floating>.form-select:focus {
+    background-color: #1e90ff;
+    color: #fff;
+    box-shadow: 0 0 10px #1e90ff;
+}
+
+.form-floating label {
+    color: #ccc;
+}
+
+.btn-submit {
+    background: linear-gradient(135deg, #1e90ff, #0d6efd);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: white;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.btn-submit:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 18px rgba(30, 144, 255, 0.5);
+    color: white;
+    text-decoration: none;
+}
+
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.form-floating select:focus~label {
+    transform: scale(.85) translateY(-1.5rem) translateX(0.15rem);
+    opacity: 1;
+}
+
+.form-select:required:invalid {
+    color: #6c757d;
+}
+
+.form-select option {
+    color: #000;
+}
+
+
+.btn-link {
+    background: linear-gradient(135deg, #1e90ff, #0d6efd);
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: white;
+    border-radius: 10px;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+.btn-link:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 18px rgba(30, 144, 255, 0.5);
+    color: white;
+    text-decoration: none;
+}
